@@ -1,2 +1,3 @@
 # duncan
- Great and Responsable TypeScript Chains
+
+> Great and Responsable TypeScript Chains

@@ -1,0 +1,15 @@
+{
+  "name": "duncan",
+  "version": "0.0.1",
+  "description": "Great and Responsable TypeScript Chains",
+  "keywords": [
+    "duncan",
+    "chain",
+    "responsability",
+    "sequential",
+    "parallel",
+    "typescript"
+  ],
+  "author": "Jérémie Pichon <contact@cadgerfeast.com>",
+  "license": "MIT"
+}
