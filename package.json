@@ -1,5 +1,6 @@
 {
   "name": "duncan",
+  "type": "module",
   "version": "0.0.1",
   "description": "Great and Responsable TypeScript Chains",
   "keywords": [
@@ -11,5 +12,24 @@
     "typescript"
   ],
   "author": "Jérémie Pichon <contact@cadgerfeast.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/dts/index.d.ts"
+    }
+  },
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/dts/index.d.ts",
+  "scripts": {
+    "build": "run-s build:*",
+    "build:esm": "tsc -p tsconfig.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:dts": "tsc -p tsconfig.dts.json"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.9.3"
+  }
 }
