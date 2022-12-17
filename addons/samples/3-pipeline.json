@@ -1,0 +1,42 @@
+{
+  "name": "Pipeline",
+  "type": "sequential",
+  "children": [
+    {
+      "name": "Setup"
+    },
+    {
+      "name": "Install"
+    },
+    {
+      "name": "Checks",
+      "type": "parallel",
+      "children": [
+        {
+          "name": "Unit Tests",
+          "type": "sequential",
+          "children": [
+            {
+              "name": "Test"
+            },
+            {
+              "name": "Coverage"
+            }
+          ]
+        },
+        {
+          "name": "Lint"
+        }
+      ]
+    },
+    {
+      "name": "Build"
+    },
+    {
+      "name": "Publish"
+    },
+    {
+      "name": "Cleanup"
+    }
+  ]
+}

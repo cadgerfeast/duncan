@@ -1,0 +1,7 @@
+{
+  "description": "Duncan",
+  "docsDir": "./docs",
+  "addonsDir": "./addons",
+  "publicDir": "./public",
+  "distDir": "./.docs"
+}

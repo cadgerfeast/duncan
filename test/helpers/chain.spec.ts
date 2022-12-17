@@ -149,6 +149,22 @@ describe('Chain', () => {
       expect(_context.calls[1]).toEqual('Command 2');
       expect(_context.calls[2]).toBeUndefined();
     });
+    it('should allow chain handlers to be added', async () => {
+      const mainChain = new SequentialChain({
+        name: 'Main Sequential Chain'
+      });
+      const childChain = new SequentialChain({
+        name: 'Child Sequential Chain'
+      });
+      mainChain.append(_syncCommand1);
+      childChain.append(_syncCommand2);
+      childChain.append(_syncCommand3);
+      mainChain.append(childChain);
+      await mainChain.execute(_context);
+      expect(_context.calls[0]).toEqual('Command 1');
+      expect(_context.calls[1]).toEqual('Command 2');
+      expect(_context.calls[2]).toEqual('Command 3');
+    });
   });
   describe('ParallelChain', () => {
     it('should execute handlers in parallel', async () => {
@@ -175,6 +191,22 @@ describe('Chain', () => {
       expect(_context.calls[0]).toEqual('Command 6');
       expect(_context.calls[1]).toEqual('Command 5');
       expect(_context.calls[2]).toBeUndefined();
+    });
+    it('should allow chain handlers to be added', async () => {
+      const mainChain = new ParallelChain({
+        name: 'Main Parallel Chain'
+      });
+      const childChain = new ParallelChain({
+        name: 'Child Parallel Chain'
+      });
+      mainChain.append(_asyncCommand4);
+      childChain.append(_asyncCommand5);
+      childChain.append(_asyncCommand6);
+      mainChain.append(childChain);
+      await mainChain.execute(_context);
+      expect(_context.calls[0]).toEqual('Command 6');
+      expect(_context.calls[1]).toEqual('Command 5');
+      expect(_context.calls[2]).toEqual('Command 4');
     });
   });
 });
