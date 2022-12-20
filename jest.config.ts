@@ -12,6 +12,7 @@ export default {
     '^.+\\.[tj]sx?$': [
       'ts-jest',
       {
+        tsconfig: 'tsconfig.esm.json',
         useESM: true
       }
     ]

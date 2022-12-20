@@ -4,8 +4,6 @@ model:
     path: /
   - name: Getting Started
     path: /getting-started
-  - name: Playground
-    path: /playground
   - name: Features
     path: /features/commands
     children:

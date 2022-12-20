@@ -1,0 +1,84 @@
+{
+  "name": "Pipeline",
+  "type": "sequential",
+  "children": [
+    {
+      "name": "Setup",
+      "type": "node",
+      "meta": {
+        "state": "unknown",
+        "duration": 1000,
+        "result": true
+      }
+    },
+    {
+      "name": "Install",
+      "type": "node",
+      "meta": {
+        "state": "unknown",
+        "duration": 1000,
+        "result": true
+      }
+    },
+    {
+      "name": "Checks",
+      "type": "parallel",
+      "children": [
+        {
+          "name": "Unit Tests",
+          "type": "sequential",
+          "children": [
+            {
+              "name": "Test",
+              "type": "node",
+              "meta": {
+                "duration": 1000,
+                "result": false
+              }
+            },
+            {
+              "name": "Coverage",
+              "type": "node",
+              "meta": {
+                "duration": 1000,
+                "result": true
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lint",
+          "type": "node",
+          "meta": {
+            "duration": 1000,
+            "result": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Build",
+      "type": "node",
+      "meta": {
+        "duration": 1000,
+        "result": true
+      }
+    },
+    {
+      "name": "Publish",
+      "type": "node",
+      "meta": {
+        "duration": 1000,
+        "result": true
+      }
+    },
+    {
+      "name": "Cleanup",
+      "type": "node",
+      "meta": {
+        "duration": 1000,
+        "result": true
+      }
+    }
+  ]
+}

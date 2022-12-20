@@ -1,5 +1,0 @@
----
-title: Duncan - Playground
----
-
-<Playground/>

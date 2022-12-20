@@ -59,8 +59,15 @@ describe('Chain', () => {
       throw new Error('Command has failed.');
     }
   });
-  const _asyncFailedCommand = new Command<typeof _context>({
-    name: 'Async Failed Command',
+  const _asyncFailedCommand1 = new Command<typeof _context>({
+    name: 'Async Failed Command 1',
+    async handler () {
+      await delay(250);
+      throw new Error('Command has failed.');
+    }
+  });
+  const _asyncFailedCommand2 = new Command<typeof _context>({
+    name: 'Async Failed Command 2',
     async handler () {
       await delay(250);
       throw new Error('Command has failed.');
@@ -74,6 +81,26 @@ describe('Chain', () => {
   });
 
   describe('Common', () => {
+    it('should initialize with handlers', async () => {
+      const chain = new SequentialChain({
+        name: 'Sequential Chain',
+        handlers: [
+          _syncCommand1,
+          _syncCommand2,
+          _syncCommand3
+        ]
+      });
+      expect(chain.handlers[0].name).toEqual('Command 1');
+      expect(chain.handlers[1].name).toEqual('Command 2');
+      expect(chain.handlers[2].name).toEqual('Command 3');
+      expect(() => new SequentialChain({
+        name: 'Sequential Chain',
+        handlers: [
+          _syncCommand1,
+          _syncCommand1
+        ]
+      })).toThrowError('Cannot add "Command 1" handler in chain, it already exists.');
+    });
     it('should append handlers', async () => {
       const chain = new SequentialChain({
         name: 'Sequential Chain'
@@ -179,18 +206,41 @@ describe('Chain', () => {
       expect(_context.calls[1]).toEqual('Command 5');
       expect(_context.calls[2]).toEqual('Command 4');
     });
-    it('should stop the chain when an error occurs', async () => {
+    it('should stop the chain when an error occurs by default', async () => {
       const chain = new ParallelChain({
         name: 'Parallel Chain'
       });
       chain.append(_asyncCommand4);
       chain.append(_asyncCommand5);
       chain.append(_asyncCommand6);
-      chain.append(_asyncFailedCommand);
-      await expect(chain.execute(_context)).rejects.toThrowError('Command has failed.');
+      chain.append(_asyncFailedCommand1);
+      await expect(chain.execute(_context)).rejects.toThrowError('"Parallel Chain" has failed with 1 handlers.');
       expect(_context.calls[0]).toEqual('Command 6');
       expect(_context.calls[1]).toEqual('Command 5');
-      expect(_context.calls[2]).toBeUndefined();
+      expect(_context.calls[2]).toEqual('Command 4');
+    });
+    it('should stop the chain when half handlers are rejected', async () => {
+      const chain = new ParallelChain({
+        name: 'Parallel Chain',
+        async validate (results) {
+          const success = results.filter((r) => r.status === 'fulfilled');
+          const failures = results.filter((r) => r.status === 'rejected');
+          if (failures.length >= success.length) {
+            throw new Error('Chain has ">= 50%" failure rate.');
+          }
+        }
+      });
+      chain.append(_asyncCommand4);
+      chain.append(_asyncCommand5);
+      chain.append(_asyncFailedCommand1);
+      await chain.execute(_context);
+      expect(_context.calls[0]).toEqual('Command 5');
+      expect(_context.calls[1]).toEqual('Command 4');
+      chain.append(_asyncFailedCommand2);
+      _context.calls = [];
+      await expect(chain.execute(_context)).rejects.toThrowError('Chain has ">= 50%" failure rate.');
+      expect(_context.calls[0]).toEqual('Command 5');
+      expect(_context.calls[1]).toEqual('Command 4');
     });
     it('should allow chain handlers to be added', async () => {
       const mainChain = new ParallelChain({

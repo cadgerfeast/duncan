@@ -1,7 +1,7 @@
 export interface HandlerManifest {
   name: string;
 }
-export abstract class Handler<Context> {
+export abstract class Handler<Context = unknown> {
   // Attributes
   public name: string;
   // Constructor
