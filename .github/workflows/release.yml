@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  build:
+  release:
     if: "!contains(github.event.head_commit.message, 'Release duncan@')"
     runs-on: ubuntu-20.04
     steps:
@@ -33,7 +33,7 @@ jobs:
     - name: Install
       run: npm ci
     - name: Build
-      run: npm run build
+      run: npm run build:lib
     - name: Release
       run: npx release-it@14.6.2 --ci --verbose --disable-metrics --increment=${{github.event.inputs.version}}
       env:

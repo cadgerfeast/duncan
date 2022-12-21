@@ -25,9 +25,10 @@
   "scripts": {
     "dev": "madoc dev",
     "build": "run-s build:*",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:dts": "tsc -p tsconfig.dts.json",
+    "build:lib": "run-p build:lib:*",
+    "build:lib:esm": "tsc -p tsconfig.esm.json",
+    "build:lib:cjs": "tsc -p tsconfig.cjs.json",
+    "build:lib:dts": "tsc -p tsconfig.dts.json",
     "build:docs": "madoc build",
     "test": "jest",
     "lint": "eslint ./src ./test"
