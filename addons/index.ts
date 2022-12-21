@@ -117,6 +117,7 @@ export interface Step {
     state: 'in-progress'|'success'|'failure'|'unknown',
     duration: number;
     result: boolean;
+    when?: 'success'|'failure'|'always';
   };
   children?: Step[];
 }

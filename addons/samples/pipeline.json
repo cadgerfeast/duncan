@@ -77,7 +77,8 @@
       "type": "node",
       "meta": {
         "duration": 1000,
-        "result": true
+        "result": true,
+        "when": "always"
       }
     }
   ]

@@ -81,6 +81,22 @@
           case 'node': {
             return new Duncan.Command({
               name: model.name,
+              when (context, previous) {
+                if (model.meta && model.meta.when) {
+                  switch (model.meta.when) {
+                    case 'success': {
+                      return previous ? (previous.status === 'fulfilled') : true;
+                    }
+                    case 'failure': {
+                      return previous ? (previous.status === 'rejected') : true;
+                    }
+                    case 'always': {
+                      return true;
+                    }
+                  }
+                }
+                return previous ? (previous.status === 'fulfilled') : true;
+              },
               async handler (context) {
                 logger.debug(`"${this.name}" command started.`);
                 if (model.meta) {

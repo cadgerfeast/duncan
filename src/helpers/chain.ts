@@ -1,10 +1,11 @@
 // Helpers
+import { SafeAny } from '../utils/types.js';
 import { Handler, HandlerManifest } from './handler.js';
 
-interface ChainManifest<Context> extends HandlerManifest {
+interface ChainManifest<Context> extends HandlerManifest<Context> {
   handlers?: Handler<Context>[];
 }
-export abstract class Chain<Context> extends Handler<Context> {
+export abstract class Chain<Context = SafeAny> extends Handler<Context> {
   // Attributes
   public handlers: Handler<Context>[];
   // Constructor
@@ -50,11 +51,21 @@ export abstract class Chain<Context> extends Handler<Context> {
   }
 }
 
-export class SequentialChain<Context> extends Chain<Context> {
+export class SequentialChain<Context = SafeAny> extends Chain<Context> {
   // Methods
   public async execute (context: Context) {
-    for (const handler of this.handlers) {
-      await handler.execute(context);
+    let err: Error|undefined;
+    let res: PromiseSettledResult<Awaited<Context>>|undefined;
+    for (let i = 0; i < this.handlers.length; i++) {
+      if (this.handlers[i].when(context, res)) {
+        res = (await Promise.allSettled([this.handlers[i].execute(context)]))[0];
+      }
+      if (res && res.status === 'rejected') {
+        err = res.reason;
+      }
+    }
+    if (err) {
+      throw err;
     }
     return context;
   }
@@ -74,7 +85,7 @@ class ParallelChainRejectedError<Context> extends Error {
     this.failures = failures;
   }
 }
-export class ParallelChain<Context> extends Chain<Context> {
+export class ParallelChain<Context = SafeAny> extends Chain<Context> {
   // Attributes
   private validate: (results: PromiseSettledResult<Awaited<Context>>[]) => Promise<void>;
   // Constructor

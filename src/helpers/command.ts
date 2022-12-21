@@ -1,7 +1,7 @@
 // Helpers
 import { Handler, HandlerManifest } from './handler.js';
 
-interface CommandManifest<Context> extends HandlerManifest {
+interface CommandManifest<Context> extends HandlerManifest<Context> {
   handler: (this: Command<Context>, context: Context) => Promise<Context>;
 }
 export class Command<Context> extends Handler<Context> {
