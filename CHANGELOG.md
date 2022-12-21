@@ -1,5 +1,5 @@
 # Changelog
 
-## 0.0.2
+## 0.0.3
 
-- add when callback and pipeline [`651aff8`](https://github.com/cadgerfeast/duncan/commit/651aff8a7d30eeefeea33d9c98b33a0b1ac65eae)
+- rename workflow job, better build script [`70e1fd9`](https://github.com/cadgerfeast/duncan/commit/70e1fd9414ec9464f74d72fe62cb69daa359738c)
