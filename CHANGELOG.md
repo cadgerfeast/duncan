@@ -1,5 +1,5 @@
 # Changelog
 
-## 0.0.3
+## 0.0.4
 
-- rename workflow job, better build script [`70e1fd9`](https://github.com/cadgerfeast/duncan/commit/70e1fd9414ec9464f74d72fe62cb69daa359738c)
+- add umd export [`23e4b34`](https://github.com/cadgerfeast/duncan/commit/23e4b34916057f8b65227eca8729916076cfa790)
