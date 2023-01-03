@@ -5,5 +5,5 @@ export interface Node {
 
 export type SchemaInstance = {
   getParentNodes: () => HTMLDivElement[];
-  getNodes (parents: HTMLDivElement[] = []): Node[];
+  getNodes (parents: HTMLDivElement[]): Node[];
 };
