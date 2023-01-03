@@ -1,5 +1,7 @@
 {
+  "title": "Duncan",
   "description": "Great and Responsable TypeScript Chains",
+  "favicon": "/icons/duncan.svg",
   "docsDir": "./docs",
   "addonsDir": "./addons",
   "publicDir": "./public",

@@ -6,6 +6,8 @@
 [![Downloads](https://img.shields.io/npm/dt/duncan.svg)](https://www.npmjs.com/package/duncan)
 [![License](https://img.shields.io/npm/l/duncan.svg)](https://github.com/cadgerfeast/duncan/blob/master/LICENSE)
 
+<p align="center"><br/><img width="200" src="https://duncan.cadgerfeast.dev/icons/duncan.svg" alt="Duncan Icon"/><br/><br/></p>
+
 > Great and Responsable TypeScript Chains
 
 **Duncan** is a JavaScript library that allows to organize `asynchronous operations` under a set of commands to be executed `sequentially`, or `in parallel`.
