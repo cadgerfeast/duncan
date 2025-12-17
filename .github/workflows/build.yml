@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'Release duncan@')"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
@@ -20,17 +20,7 @@ jobs:
       with:
         node-version: '16.14.2'
         registry-url: 'https://registry.npmjs.org'
-    - name: Cache
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-duncan-node-modules
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        cache: 'npm'
     - name: Install
       run: npm ci
     - name: Build
@@ -43,15 +33,10 @@ jobs:
       working-directory: ./coverage
       run: |
         sed -i 's/\/home\/runner\/work\/duncan\/duncan\//\/github\/workspace\//g' lcov.info
-    - name: Sonar
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     - name: Deploy
       if: github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v3
       with:
         personal_token: ${{ secrets.ACCESS_TOKEN }}
         publish_dir: ./.docs
-        cname: duncan.cadgerfeast.dev
+        cname: duncan.cadgerfeast.com

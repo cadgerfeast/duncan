@@ -9,7 +9,7 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
@@ -19,17 +19,7 @@ jobs:
       with:
         node-version: '16.14.2'
         registry-url: 'https://registry.npmjs.org'
-    - name: Cache
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-duncan-node-modules
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        cache: 'npm'
     - name: Install
       run: npm ci
     - name: Build
